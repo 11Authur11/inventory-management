@@ -1,0 +1,95 @@
+// This is your Prisma schema file for the Inventory Manager backend.
+// It defines the database models and their relationships for users, products, sales, purchases, expenses, and summaries.
+
+// Generator: Specifies Prisma Client as the ORM client for Node.js/TypeScript.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Datasource: Connects to a PostgreSQL database using the DATABASE_URL from environment variables.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users: Stores user information.
+model Users {
+  userId String @id // Primary key
+  name   String
+  email  String
+}
+
+// Products: Stores product details and links to sales and purchases.
+model Products {
+  productId     String      @id // Primary key
+  name          String
+  price         Float
+  rating        Float? // Optional product rating
+  stockQuantity Int
+  Sales         Sales[] // One-to-many relation to Sales
+  Purchases     Purchases[] // One-to-many relation to Purchases
+}
+
+// Sales: Records each sale transaction for a product.
+model Sales {
+  saleId      String   @id // Primary key
+  productId   String // Foreign key to Products
+  timestamp   DateTime // When the sale occurred
+  quantity    Int // Number of items sold
+  unitPrice   Float // Price per item
+  totalAmount Float // Total sale amount
+  product     Products @relation(fields: [productId], references: [productId]) // Relation to Products
+}
+
+// Purchases: Records each purchase transaction for a product.
+model Purchases {
+  purchaseId String   @id // Primary key
+  productId  String // Foreign key to Products
+  timestamp  DateTime // When the purchase occurred
+  quantity   Int // Number of items purchased
+  unitCost   Float // Cost per item
+  totalCost  Float // Total purchase cost
+  product    Products @relation(fields: [productId], references: [productId]) // Relation to Products
+}
+
+// Expenses: Tracks business expenses by category.
+model Expenses {
+  expenseId String   @id // Primary key
+  category  String // Expense category
+  amount    Float // Expense amount
+  timestamp DateTime // When the expense occurred
+}
+
+// SalesSummary: Stores daily/periodic sales summary data.
+model SalesSummary {
+  salesSummaryId   String   @id // Primary key
+  totalValue       Float // Total sales value
+  changePercentage Float? // Optional: % change from previous period
+  date             DateTime // Summary date
+}
+
+// PurchaseSummary: Stores daily/periodic purchase summary data.
+model PurchaseSummary {
+  purchaseSummaryId String   @id // Primary key
+  totalPurchased    Float // Total amount purchased
+  changePercentage  Float? // Optional: % change from previous period
+  date              DateTime // Summary date
+}
+
+// ExpenseSummary: Stores daily/periodic expense summary data, with relation to ExpenseByCategory.
+model ExpenseSummary {
+  expenseSummaryId  String              @id // Primary key
+  totalExpenses     Float // Total expenses
+  date              DateTime // Summary date
+  ExpenseByCategory ExpenseByCategory[] // One-to-many relation to ExpenseByCategory
+}
+
+// ExpenseByCategory: Breaks down expenses by category for each summary.
+model ExpenseByCategory {
+  expenseByCategoryId String         @id // Primary key
+  expenseSummaryId    String // Foreign key to ExpenseSummary
+  category            String // Expense category
+  amount              BigInt // Amount spent in this category
+  date                DateTime // Date of the expense
+  expenseSummary      ExpenseSummary @relation(fields: [expenseSummaryId], references: [expenseSummaryId]) // Relation to ExpenseSummary
+}

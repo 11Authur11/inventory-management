@@ -1,0 +1,86 @@
+// Import Tailwind's Config type for type safety
+import type { Config } from "tailwindcss";
+// Import createThemes utility from tw-colors for theme generation
+import { createThemes } from "tw-colors";
+// Import Tailwind's default color palette
+import colors from "tailwindcss/colors";
+
+// List of base color names to generate themes for
+const baseColors = [
+  "gray",
+  "red",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+  "pink",
+];
+
+// Mapping of color shades for light/dark theme inversion
+const shadeMapping = {
+  "50": "900",
+  "100": "800",
+  "200": "700",
+  "300": "600",
+  "400": "500",
+  "500": "400",
+  "600": "300",
+  "700": "200",
+  "800": "100",
+  "900": "50",
+};
+
+// Helper function to generate a theme object based on color palette and mapping
+// If invert is true, it swaps the shade values for dark mode
+const generateThemeObject = (colors: any, mapping: any, invert = false) => {
+  const theme: any = {};
+  baseColors.forEach((color) => {
+    theme[color] = {};
+    Object.entries(mapping).forEach(([key, value]: any) => {
+      const shadeKey = invert ? value : key;
+      theme[color][key] = colors[color][shadeKey];
+    });
+  });
+  return theme;
+};
+
+// Generate light and dark theme color objects
+const lightTheme = generateThemeObject(colors, shadeMapping);
+const darkTheme = generateThemeObject(colors, shadeMapping, true);
+
+// Define the themes object for tw-colors
+const themes = {
+  light: {
+    ...lightTheme,
+    white: "#ffffff", // Set white for light theme
+  },
+  dark: {
+    ...darkTheme,
+    white: colors.gray["950"], // Use dark gray as white in dark theme
+    black: colors.gray["50"],  // Use light gray as black in dark theme
+  },
+};
+
+// Tailwind CSS configuration object
+const config: Config = {
+  darkMode: "class", // Enable class-based dark mode
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in pages
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in components
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in app directory
+  ],
+  theme: {
+    extend: {
+      // Add custom background gradients
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+    },
+  },
+  plugins: [createThemes(themes)], // Register tw-colors plugin with custom themes
+};
+
+export default config;
