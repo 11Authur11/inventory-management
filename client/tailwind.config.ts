@@ -1,103 +1,74 @@
 import type { Config } from "tailwindcss";
 import { createThemes } from "tw-colors";
+import colors from "tailwindcss/colors";
 
-// Your original custom tokens
-const tokens = {
-  grey: {
-    100: "#e0e0e0",
-    200: "#c2c2c2",
-    300: "#a3a3a3",
-    400: "#858585",
-    500: "#666666",
-    600: "#525252",
-    700: "#3d3d3d",
-    800: "#292929",
-    900: "#141414",
-  },
-  primary: {
-    100: "#ced5d6",
-    200: "#9dabad",
-    300: "#6d8285",
-    400: "#3c585c",
-    500: "#0b2e33",
-    600: "#092529",
-    700: "#071c1f",
-    800: "#041214",
-    900: "#02090a",
-  },
-  greenAccent: {
-    100: "#dce5e6",
-    200: "#b9cbcd",
-    300: "#95b0b4",
-    400: "#72969b",
-    500: "#4f7c82",
-    600: "#3f6368",
-    700: "#2f4a4e",
-    800: "#203234",
-    900: "#10191a",
-  },
-  redAccent: {
-    100: "#e9eff0",
-    200: "#d4e0e1",
-    300: "#bed0d3",
-    400: "#a9c1c4",
-    500: "#93b1b5",
-    600: "#768e91",
-    700: "#586a6d",
-    800: "#3b4748",
-    900: "#1d2324",
-  },
-  blueAccent: {
-    100: "#f1f9fb",
-    200: "#e3f4f6",
-    300: "#d4eef2",
-    400: "#c6e9ed",
-    500: "#b8e3e9",
-    600: "#93b6ba",
-    700: "#6e888c",
-    800: "#4a5b5d",
-    900: "#252d2f",
-  },
+// Base Tailwind color families to support
+const baseColors = ["gray", "red", "yellow", "green", "blue", "indigo", "purple", "pink"];
+
+// Define the shade levels
+const shadeKeys = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900"];
+
+// High contrast inversion mapping for dark mode
+const highContrastMapping: Record<string, string> = Object.fromEntries(
+  shadeKeys.map((shade, i) => {
+    const offset = 4; // Increase contrast by shifting deeper into the scale
+    const targetIndex = Math.min(i + offset, shadeKeys.length - 1);
+    return [shade, shadeKeys[shadeKeys.length - 1 - targetIndex]];
+  })
+);
+
+// Generate themed color object
+const generateThemeObject = (
+  palette: typeof colors,
+  mapping: Record<string, string>,
+  invert = false
+) => {
+  return Object.fromEntries(
+    baseColors.map((color) => [
+      color,
+      Object.fromEntries(
+        shadeKeys.map((shade) => {
+          const mapped = invert ? mapping[shade] : shade;
+          // Cast color and mapped to their respective key types
+          return [
+            shade,
+            palette[color as keyof typeof colors][mapped as keyof typeof colors["gray"]],
+          ];
+        })
+      ),
+    ])
+  );
 };
 
-// Automatically invert shade levels
-const shadeMapping: Record<string, string> = {
-  100: "900",
-  200: "800",
-  300: "700",
-  400: "600",
-  500: "500", // central stays same
-  600: "400",
-  700: "300",
-  800: "200",
-  900: "100",
-};
+// Generate both themes
+const lightTheme = generateThemeObject(colors, highContrastMapping);
+const darkTheme = generateThemeObject(colors, highContrastMapping, true);
 
-// Invert theme shades
-const generateThemeObject = (inputTokens: any, invert = false) => {
-  const theme: any = {};
-  for (const [colorName, shades] of Object.entries(inputTokens)) {
-    theme[colorName] = {};
-    for (const [shade, value] of Object.entries(shades as Record<string, string>)) {
-      const mappedShade = invert ? shadeMapping[shade] : shade;
-      theme[colorName][shade] = (inputTokens as any)[colorName][mappedShade];
-    }
-  }
-  return theme;
-};
-
-const darkTheme = generateThemeObject(tokens);
-const lightTheme = generateThemeObject(tokens, true);
-
+// Final themes with extra contrast adjustments
 const themes = {
-  dark: darkTheme,
-  light: lightTheme,
+  light: {
+    ...lightTheme,
+    white: "#ffffff",
+    black: "#000000",
+    background: colors.gray["50"],
+    foreground: colors.gray["900"],
+  },
+  dark: {
+    ...darkTheme,
+    white: colors.gray["950"], // dark bg
+    black: colors.gray["50"],  // light text
+    background: colors.gray["950"],
+    foreground: colors.gray["100"],
+  },
 };
 
+// Tailwind configuration
 const config: Config = {
   darkMode: "class",
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
