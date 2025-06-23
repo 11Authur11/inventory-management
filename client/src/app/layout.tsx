@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardWrapper from "./dashboardWrapper";
 
-// Layout component for the Next.js app
-// Sets up global styles, font, and dashboard wrapper
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,7 +15,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Render the root layout with dashboard wrapper
   return (
     <html lang="en">
       <body className={inter.className}>

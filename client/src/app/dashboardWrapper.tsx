@@ -5,18 +5,12 @@ import Navbar from "@/app/(components)/Navbar";
 import Sidebar from "@/app/(components)/Sidebar";
 import StoreProvider, { useAppSelector } from "./redux";
 
-// DashboardLayout is the main layout for the dashboard, including sidebar and navbar
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  // Get sidebar and dark mode state from Redux
   const isSidebarCollapsed = useAppSelector(
-    (state: { global: { isSidebarCollapsed: boolean } }) =>
-      state.global.isSidebarCollapsed
+    (state) => state.global.isSidebarCollapsed
   );
-  const isDarkMode = useAppSelector(
-    (state: { global: { isDarkMode: boolean } }) => state.global.isDarkMode
-  );
+  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 
-  // Set dark or light mode class on document
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -44,7 +38,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// DashboardWrapper wraps the app with Redux store and dashboard layout
 const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <StoreProvider>
