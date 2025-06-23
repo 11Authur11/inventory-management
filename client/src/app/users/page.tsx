@@ -26,13 +26,6 @@ const Users = () => {
   return (
     <div className="flex flex-col">
       <Header name="Users" />
-      {/* DATA GRID HEADER */}
-      <div className="hidden sm:grid grid-cols-4 gap-4 px-4 py-2 rounded-t-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold mb-2">
-        <div>Name</div>
-        <div>Email</div>
-        <div>Role</div>
-        <div>Status</div>
-      </div>
       <DataGrid
         rows={users}
         columns={columns}

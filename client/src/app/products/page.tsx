@@ -69,16 +69,8 @@ const Products = () => {
         </button>
       </div>
 
-      {/* DATA GRID HEADER */}
-      <div className="hidden sm:grid grid-cols-4 gap-4 px-4 py-2 rounded-t-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold mb-2">
-        <div>Product</div>
-        <div>Price</div>
-        <div>Stock</div>
-        <div>Rating</div>
-      </div>
-
       {/* BODY PRODUCTS LIST */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg-grid-cols-3 gap-10 justify-between">
         {isLoading ? (
           <div>Loading...</div>
         ) : (
