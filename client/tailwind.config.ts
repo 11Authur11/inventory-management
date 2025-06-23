@@ -1,10 +1,9 @@
 import type { Config } from "tailwindcss";
 import { createThemes } from "tw-colors";
-import colors from "tailwindcss/colors";
 
-// Custom color tokens for dark mode
-const customDarkColors = {
-  gray: {
+// Define your custom color tokens
+const tokens = {
+  grey: {
     100: "#e0e0e0",
     200: "#c2c2c2",
     300: "#a3a3a3",
@@ -26,7 +25,7 @@ const customDarkColors = {
     800: "#041214",
     900: "#02090a",
   },
-  green: {
+  greenAccent: {
     100: "#dce5e6",
     200: "#b9cbcd",
     300: "#95b0b4",
@@ -37,7 +36,7 @@ const customDarkColors = {
     800: "#203234",
     900: "#10191a",
   },
-  red: {
+  redAccent: {
     100: "#e9eff0",
     200: "#d4e0e1",
     300: "#bed0d3",
@@ -48,7 +47,7 @@ const customDarkColors = {
     800: "#3b4748",
     900: "#1d2324",
   },
-  blue: {
+  blueAccent: {
     100: "#f1f9fb",
     200: "#e3f4f6",
     300: "#d4eef2",
@@ -59,12 +58,11 @@ const customDarkColors = {
     800: "#4a5b5d",
     900: "#252d2f",
   },
-  white: "#ffffff",
-  black: "#141414",
 };
 
-const customLightColors = {
-  gray: {
+// Inverted tokens for light mode
+const invertedTokens = {
+  grey: {
     100: "#141414",
     200: "#292929",
     300: "#3d3d3d",
@@ -79,14 +77,14 @@ const customLightColors = {
     100: "#02090a",
     200: "#041214",
     300: "#071c1f",
-    400: "#f2f0f0", // manually changed
+    400: "#f2f0f0", // manually adjusted
     500: "#0b2e33",
     600: "#3c585c",
     700: "#6d8285",
     800: "#9dabad",
     900: "#ced5d6",
   },
-  green: {
+  greenAccent: {
     100: "#10191a",
     200: "#203234",
     300: "#2f4a4e",
@@ -97,7 +95,7 @@ const customLightColors = {
     800: "#b9cbcd",
     900: "#dce5e6",
   },
-  red: {
+  redAccent: {
     100: "#1d2324",
     200: "#3b4748",
     300: "#586a6d",
@@ -108,7 +106,7 @@ const customLightColors = {
     800: "#d4e0e1",
     900: "#e9eff0",
   },
-  blue: {
+  blueAccent: {
     100: "#252d2f",
     200: "#4a5b5d",
     300: "#6e888c",
@@ -119,21 +117,17 @@ const customLightColors = {
     800: "#e3f4f6",
     900: "#f1f9fb",
   },
-  white: "#ffffff",
-  black: "#141414",
 };
 
 const themes = {
-  light: customLightColors,
-  dark: customDarkColors,
+  dark: tokens,
+  light: invertedTokens,
 };
 
 const config: Config = {
   darkMode: "class",
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -148,4 +142,3 @@ const config: Config = {
 };
 
 export default config;
-// ...existing code...
