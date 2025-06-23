@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import { createThemes } from "tw-colors";
 
-// Define your custom color tokens
+// Your original custom tokens
 const tokens = {
   grey: {
     100: "#e0e0e0",
@@ -60,68 +60,38 @@ const tokens = {
   },
 };
 
-// Inverted tokens for light mode
-const invertedTokens = {
-  grey: {
-    100: "#141414",
-    200: "#292929",
-    300: "#3d3d3d",
-    400: "#525252",
-    500: "#666666",
-    600: "#858585",
-    700: "#a3a3a3",
-    800: "#c2c2c2",
-    900: "#e0e0e0",
-  },
-  primary: {
-    100: "#02090a",
-    200: "#041214",
-    300: "#071c1f",
-    400: "#f2f0f0", // manually adjusted
-    500: "#0b2e33",
-    600: "#3c585c",
-    700: "#6d8285",
-    800: "#9dabad",
-    900: "#ced5d6",
-  },
-  greenAccent: {
-    100: "#10191a",
-    200: "#203234",
-    300: "#2f4a4e",
-    400: "#3f6368",
-    500: "#4f7c82",
-    600: "#72969b",
-    700: "#95b0b4",
-    800: "#b9cbcd",
-    900: "#dce5e6",
-  },
-  redAccent: {
-    100: "#1d2324",
-    200: "#3b4748",
-    300: "#586a6d",
-    400: "#768e91",
-    500: "#93b1b5",
-    600: "#a9c1c4",
-    700: "#bed0d3",
-    800: "#d4e0e1",
-    900: "#e9eff0",
-  },
-  blueAccent: {
-    100: "#252d2f",
-    200: "#4a5b5d",
-    300: "#6e888c",
-    400: "#93b6ba",
-    500: "#b8e3e9",
-    600: "#c6e9ed",
-    700: "#d4eef2",
-    800: "#e3f4f6",
-    900: "#f1f9fb",
-  },
+// Automatically invert shade levels
+const shadeMapping: Record<string, string> = {
+  100: "900",
+  200: "800",
+  300: "700",
+  400: "600",
+  500: "500", // central stays same
+  600: "400",
+  700: "300",
+  800: "200",
+  900: "100",
 };
 
+// Invert theme shades
+const generateThemeObject = (inputTokens: any, invert = false) => {
+  const theme: any = {};
+  for (const [colorName, shades] of Object.entries(inputTokens)) {
+    theme[colorName] = {};
+    for (const [shade, value] of Object.entries(shades as Record<string, string>)) {
+      const mappedShade = invert ? shadeMapping[shade] : shade;
+      theme[colorName][shade] = (inputTokens as any)[colorName][mappedShade];
+    }
+  }
+  return theme;
+};
+
+const darkTheme = generateThemeObject(tokens);
+const lightTheme = generateThemeObject(tokens, true);
+
 const themes = {
-  dark: tokens,
-  light: invertedTokens,
+  dark: darkTheme,
+  light: lightTheme,
 };
 
 const config: Config = {
@@ -133,8 +103,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
