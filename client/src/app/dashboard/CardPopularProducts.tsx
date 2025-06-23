@@ -1,5 +1,3 @@
-// Card displaying a summary of popular products for the dashboard
-
 import { useGetDashboardMetricsQuery } from "@/state/api";
 import { ShoppingBag } from "lucide-react";
 import React from "react";
@@ -7,14 +5,11 @@ import Rating from "../(components)/Rating";
 import Image from "next/image";
 
 const CardPopularProducts = () => {
-  // Fetch dashboard metrics (popular products)
   const { data: dashboardMetrics, isLoading } = useGetDashboardMetricsQuery();
 
   return (
-    // Card container for popular products
     <div className="row-span-3 xl:row-span-6 bg-white shadow-md rounded-2xl pb-16">
       {isLoading ? (
-        // Show loading state
         <div className="m-5">Loading...</div>
       ) : (
         <>
@@ -30,7 +25,7 @@ const CardPopularProducts = () => {
               >
                 <div className="flex items-center gap-3">
                   <Image
-                    src={`https://s3-authurinventorymanagement.s3.eu-west-2.amazonaws.com/product${
+                    src={`https://s3-authurinventorymanagement.s3.us-east-2.amazonaws.com${
                       Math.floor(Math.random() * 3) + 1
                     }.png`}
                     alt={product.name}

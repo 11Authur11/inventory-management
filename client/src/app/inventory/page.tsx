@@ -4,9 +4,7 @@ import { useGetProductsQuery } from "@/state/api";
 import Header from "@/app/(components)/Header";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
-// Inventory page displaying a list of products in a data grid
 const columns: GridColDef[] = [
-  // Define columns for the data grid
   { field: "productId", headerName: "ID", width: 90 },
   { field: "name", headerName: "Product Name", width: 200 },
   {
@@ -32,16 +30,13 @@ const columns: GridColDef[] = [
 ];
 
 const Inventory = () => {
-  // Fetch products data from API
   const { data: products, isError, isLoading } = useGetProductsQuery();
 
   if (isLoading) {
-    // Show loading state
     return <div className="py-4">Loading...</div>;
   }
 
   if (isError || !products) {
-    // Show error state
     return (
       <div className="text-center text-red-500 py-4">
         Failed to fetch products
@@ -50,7 +45,6 @@ const Inventory = () => {
   }
 
   return (
-    // Render products data grid
     <div className="flex flex-col">
       <Header name="Inventory" />
       <DataGrid

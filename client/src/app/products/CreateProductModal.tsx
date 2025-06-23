@@ -2,22 +2,13 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { v4 } from "uuid";
 import Header from "@/app/(components)/Header";
 
-// Product creation modal for adding new products
 type ProductFormData = {
-  // Product name
   name: string;
-  // Product price
   price: number;
-  // Product stock quantity
   stockQuantity: number;
-  // Product rating
   rating: number;
 };
 
-// Props for the CreateProductModal component
-// isOpen: whether the modal is visible
-// onClose: function to close the modal
-// onCreate: function to handle product creation
 type CreateProductModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -29,7 +20,6 @@ const CreateProductModal = ({
   onClose,
   onCreate,
 }: CreateProductModalProps) => {
-  // State for form data
   const [formData, setFormData] = useState({
     productId: v4(),
     name: "",
@@ -38,7 +28,6 @@ const CreateProductModal = ({
     rating: 0,
   });
 
-  // Handle input changes
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -50,7 +39,6 @@ const CreateProductModal = ({
     });
   };
 
-  // Handle form submission
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onCreate(formData);

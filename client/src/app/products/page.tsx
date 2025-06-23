@@ -1,6 +1,5 @@
 "use client";
 
-// Products page for displaying and creating products
 import { useCreateProductMutation, useGetProductsQuery } from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
@@ -10,42 +9,32 @@ import CreateProductModal from "./CreateProductModal";
 import Image from "next/image";
 
 type ProductFormData = {
-  // Product name
   name: string;
-  // Product price
   price: number;
-  // Product stock quantity
   stockQuantity: number;
-  // Product rating
   rating: number;
 };
 
 const Products = () => {
-  // State for search term and modal visibility
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch products data from API
   const {
     data: products,
     isLoading,
     isError,
   } = useGetProductsQuery(searchTerm);
 
-  // Mutation for creating a new product
   const [createProduct] = useCreateProductMutation();
-  // Handle product creation
   const handleCreateProduct = async (productData: ProductFormData) => {
     await createProduct(productData);
   };
 
   if (isLoading) {
-    // Show loading state
     return <div className="py-4">Loading...</div>;
   }
 
   if (isError || !products) {
-    // Show error state
     return (
       <div className="text-center text-red-500 py-4">
         Failed to fetch products
@@ -54,7 +43,6 @@ const Products = () => {
   }
 
   return (
-    // Render search bar, header, product list, and modal
     <div className="mx-auto pb-5 w-full">
       {/* SEARCH BAR */}
       <div className="mb-6">
@@ -93,7 +81,7 @@ const Products = () => {
             >
               <div className="flex flex-col items-center">
                 <Image
-                  src={`https://s3-authurinventorymanagement.s3.eu-west-2.amazonaws.com/product${
+                  src={`https://s3-authurinventorymanagement.s3.us-east-2.amazonaws.com/product${
                     Math.floor(Math.random() * 3) + 1
                   }.png`}
                   alt={product.name}

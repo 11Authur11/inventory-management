@@ -1,4 +1,3 @@
-// Card displaying a summary of sales
 import { useGetDashboardMetricsQuery } from "@/state/api";
 import { TrendingUp } from "lucide-react";
 import React, { useState } from "react";
@@ -12,31 +11,24 @@ import {
   YAxis,
 } from "recharts";
 
-// Card displaying a summary of sales for the dashboard
 const CardSalesSummary = () => {
-  // Fetch dashboard metrics (sales summary data)
   const { data, isLoading, isError } = useGetDashboardMetricsQuery();
   const salesData = data?.salesSummary || [];
 
-  // State for selected timeframe (daily/weekly/monthly)
   const [timeframe, setTimeframe] = useState("weekly");
 
-  // Calculate total sales value
   const totalValueSum =
     salesData.reduce((acc, curr) => acc + curr.totalValue, 0) || 0;
 
-  // Calculate average change percentage across all data points
   const averageChangePercentage =
     salesData.reduce((acc, curr, _, array) => {
       return acc + curr.changePercentage! / array.length;
     }, 0) || 0;
 
-  // Find the data point with the highest sales value
   const highestValueData = salesData.reduce((acc, curr) => {
     return acc.totalValue > curr.totalValue ? acc : curr;
   }, salesData[0] || {});
 
-  // Format the date of the highest sales value
   const highestValueDate = highestValueData.date
     ? new Date(highestValueData.date).toLocaleDateString("en-US", {
         month: "numeric",
@@ -46,19 +38,16 @@ const CardSalesSummary = () => {
     : "N/A";
 
   if (isError) {
-    // Show error message if data fetch fails
     return <div className="m-5">Failed to fetch data</div>;
   }
 
   return (
-    // Card container with responsive row span and styling
     <div className="row-span-3 xl:row-span-6 bg-white shadow-md rounded-2xl flex flex-col justify-between">
       {isLoading ? (
-        // Show loading state
         <div className="m-5">Loading...</div>
       ) : (
         <>
-          {/* HEADER: Card title */}
+          {/* HEADER */}
           <div>
             <h2 className="text-lg font-semibold mb-2 px-7 pt-5">
               Sales Summary
@@ -66,9 +55,9 @@ const CardSalesSummary = () => {
             <hr />
           </div>
 
-          {/* BODY: Main content and chart */}
+          {/* BODY */}
           <div>
-            {/* BODY HEADER: Value, change, and timeframe selector */}
+            {/* BODY HEADER */}
             <div className="flex justify-between items-center mb-6 px-7 mt-5">
               <div className="text-lg font-medium">
                 <p className="text-xs text-gray-400">Value</p>
@@ -84,7 +73,6 @@ const CardSalesSummary = () => {
                   {averageChangePercentage.toFixed(2)}%
                 </span>
               </div>
-              {/* Timeframe dropdown */}
               <select
                 className="shadow-sm border border-gray-300 bg-white p-2 rounded"
                 value={timeframe}
@@ -97,7 +85,7 @@ const CardSalesSummary = () => {
                 <option value="monthly">Monthly</option>
               </select>
             </div>
-            {/* CHART: Bar chart for sales data */}
+            {/* CHART */}
             <ResponsiveContainer width="100%" height={350} className="px-7">
               <BarChart
                 data={salesData}
@@ -142,7 +130,7 @@ const CardSalesSummary = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* FOOTER: Summary info */}
+          {/* FOOTER */}
           <div>
             <hr />
             <div className="flex justify-between items-center mt-6 text-sm px-7 mb-4">

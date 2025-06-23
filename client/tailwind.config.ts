@@ -1,11 +1,7 @@
-// Import Tailwind's Config type for type safety
 import type { Config } from "tailwindcss";
-// Import createThemes utility from tw-colors for theme generation
 import { createThemes } from "tw-colors";
-// Import Tailwind's default color palette
 import colors from "tailwindcss/colors";
 
-// List of base color names to generate themes for
 const baseColors = [
   "gray",
   "red",
@@ -17,7 +13,6 @@ const baseColors = [
   "pink",
 ];
 
-// Mapping of color shades for light/dark theme inversion
 const shadeMapping = {
   "50": "900",
   "100": "800",
@@ -31,8 +26,6 @@ const shadeMapping = {
   "900": "50",
 };
 
-// Helper function to generate a theme object based on color palette and mapping
-// If invert is true, it swaps the shade values for dark mode
 const generateThemeObject = (colors: any, mapping: any, invert = false) => {
   const theme: any = {};
   baseColors.forEach((color) => {
@@ -45,34 +38,30 @@ const generateThemeObject = (colors: any, mapping: any, invert = false) => {
   return theme;
 };
 
-// Generate light and dark theme color objects
 const lightTheme = generateThemeObject(colors, shadeMapping);
 const darkTheme = generateThemeObject(colors, shadeMapping, true);
 
-// Define the themes object for tw-colors
 const themes = {
   light: {
     ...lightTheme,
-    white: "#ffffff", // Set white for light theme
+    white: "#ffffff",
   },
   dark: {
     ...darkTheme,
-    white: colors.gray["950"], // Use dark gray as white in dark theme
-    black: colors.gray["50"],  // Use light gray as black in dark theme
+    white: colors.gray["950"],
+    black: colors.gray["50"],
   },
 };
 
-// Tailwind CSS configuration object
 const config: Config = {
-  darkMode: "class", // Enable class-based dark mode
+  darkMode: "class",
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in pages
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in components
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}", // Scan for class usage in app directory
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      // Add custom background gradients
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -80,7 +69,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [createThemes(themes)], // Register tw-colors plugin with custom themes
+  plugins: [createThemes(themes)],
 };
 
 export default config;

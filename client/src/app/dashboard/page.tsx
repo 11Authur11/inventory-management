@@ -13,21 +13,13 @@ import CardPurchaseSummary from "./CardPurchaseSummary";
 import CardSalesSummary from "./CardSalesSummary";
 import StatCard from "./StatCard";
 
-// Dashboard page for displaying business metrics and summary cards
 const Dashboard = () => {
-  // Render dashboard cards in a responsive grid
   return (
-    // Responsive grid layout for dashboard cards
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:overflow-auto gap-10 pb-4 custom-grid-rows">
-      {/* Popular products summary card */}
       <CardPopularProducts />
-      {/* Sales summary card */}
       <CardSalesSummary />
-      {/* Purchase summary card */}
       <CardPurchaseSummary />
-      {/* Expense summary card */}
       <CardExpenseSummary />
-      {/* Stat cards for customer growth and expenses */}
       <StatCard
         title="Customer & Expenses"
         primaryIcon={<Package className="text-blue-600 w-6 h-6" />}
@@ -47,7 +39,6 @@ const Dashboard = () => {
           },
         ]}
       />
-      {/* Stat card for dues and pending orders */}
       <StatCard
         title="Dues & Pending Orders"
         primaryIcon={<CheckCircle className="text-blue-600 w-6 h-6" />}
@@ -67,7 +58,6 @@ const Dashboard = () => {
           },
         ]}
       />
-      {/* Stat card for sales and discount */}
       <StatCard
         title="Sales & Discount"
         primaryIcon={<Tag className="text-blue-600 w-6 h-6" />}

@@ -7,22 +7,17 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-// Navbar component for top navigation bar
-// Handles sidebar toggle, dark mode toggle, and user profile display
 const Navbar = () => {
-  // Access Redux state and dispatch
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 
-  // Toggle sidebar collapsed state
   const toggleSidebar = () => {
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
 
-  // Toggle dark mode state
   const toggleDarkMode = () => {
     dispatch(setIsDarkMode(!isDarkMode));
   };
@@ -72,13 +67,13 @@ const Navbar = () => {
           <hr className="w-0 h-7 border border-solid border-l border-gray-300 mx-3" />
           <div className="flex items-center gap-3 cursor-pointer">
             <Image
-              src="https://s3-authurinventorymanagement.s3.eu-west-2.amazonaws.com/profile.jpg"
+              src="https://s3-inventorymanagement.s3.us-east-2.amazonaws.com/profile.jpg"
               alt="Profile"
               width={50}
               height={50}
               className="rounded-full h-full object-cover"
             />
-            <span className="font-semibold">Taoheed</span>
+            <span className="font-semibold">Ed Roh</span>
           </div>
         </div>
         <Link href="/settings">

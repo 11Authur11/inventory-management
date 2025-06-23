@@ -24,14 +24,12 @@ interface SidebarLinkProps {
   isCollapsed: boolean;
 }
 
-// SidebarLink component for individual navigation links
 const SidebarLink = ({
   href,
   icon: Icon,
   label,
   isCollapsed,
 }: SidebarLinkProps) => {
-  // Get current pathname to highlight active link
   const pathname = usePathname();
   const isActive =
     pathname === href || (pathname === "/" && href === "/dashboard");
@@ -61,16 +59,12 @@ const SidebarLink = ({
   );
 };
 
-// Sidebar component for navigation links and logo
-// Collapsible sidebar with navigation links and footer
 const Sidebar = () => {
-  // Access Redux state and dispatch
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
 
-  // Toggle sidebar collapsed state
   const toggleSidebar = () => {
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
@@ -88,8 +82,8 @@ const Sidebar = () => {
         }`}
       >
         <Image
-          src="https://s3-authurinventorymanagement.s3.eu-west-2.amazonaws.com/logo.png"
-          alt="zutrad-logo"
+          src="https://s3-authurinventorymanagement.s3.us-east-2.amazonaws.com/logo.png"
+          alt="edstock-logo"
           width={27}
           height={27}
           className="rounded w-8"
@@ -99,7 +93,7 @@ const Sidebar = () => {
             isSidebarCollapsed ? "hidden" : "block"
           } font-extrabold text-2xl`}
         >
-          ZUTRAD
+          EDSTOCK
         </h1>
 
         <button
@@ -152,7 +146,7 @@ const Sidebar = () => {
 
       {/* FOOTER */}
       <div className={`${isSidebarCollapsed ? "hidden" : "block"} mb-10`}>
-        <p className="text-center text-xs text-gray-500">&copy; 2025 Zutrad</p>
+        <p className="text-center text-xs text-gray-500">&copy; 2024 Edstock</p>
       </div>
     </div>
   );

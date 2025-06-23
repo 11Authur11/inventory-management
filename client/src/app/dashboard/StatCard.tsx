@@ -1,5 +1,3 @@
-// Reusable stat card for displaying grouped statistics with icons and trends on the dashboard
-
 import { LucideIcon } from "lucide-react";
 import React from "react";
 
@@ -10,28 +8,24 @@ type StatDetail = {
   IconComponent: LucideIcon;
 };
 
-// Fix typing for primaryIcon prop to use React.ReactNode instead of JSX.Element
 type StatCardProps = {
   title: string;
-  primaryIcon: React.ReactNode;
+  primaryIcon: JSX.Element;
   details: StatDetail[];
   dateRange: string;
 };
 
-// Reusable stat card component for displaying grouped statistics
 const StatCard = ({
   title,
   primaryIcon,
   details,
   dateRange,
 }: StatCardProps) => {
-  // Format percentage value with sign
   const formatPercentage = (value: number) => {
     const signal = value >= 0 ? "+" : "";
     return `${signal}${value.toFixed()}%`;
   };
 
-  // Get color class for positive/negative change
   const getChangeColor = (value: number) =>
     value >= 0 ? "text-green-500" : "text-red-500";
 

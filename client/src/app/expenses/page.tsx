@@ -15,14 +15,9 @@ import {
   Tooltip,
 } from "recharts";
 
-// Expenses page for visualizing expenses by category and date
-
 type AggregatedDataItem = {
-  // Category name
   name: string;
-  // Color for the chart
   color?: string;
-  // Amount spent in this category
   amount: number;
 };
 
@@ -31,13 +26,11 @@ type AggregatedData = {
 };
 
 const Expenses = () => {
-  // State for active chart index, selected category, and date filters
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Fetch expenses data from API
   const {
     data: expensesData,
     isLoading,
@@ -45,13 +38,11 @@ const Expenses = () => {
   } = useGetExpensesByCategoryQuery();
   const expenses = useMemo(() => expensesData ?? [], [expensesData]);
 
-  // Helper to parse date string to YYYY-MM-DD
   const parseDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
 
-  // Aggregate and filter data by category and date
   const aggregatedData: AggregatedDataItem[] = useMemo(() => {
     const filtered: AggregatedData = expenses
       .filter((data: ExpenseByCategorySummary) => {
@@ -86,12 +77,10 @@ const Expenses = () => {
   };
 
   if (isLoading) {
-    // Show loading state
     return <div className="py-4">Loading...</div>;
   }
 
   if (isError || !expensesData) {
-    // Show error state
     return (
       <div className="text-center text-red-500 py-4">
         Failed to fetch expenses
@@ -100,7 +89,6 @@ const Expenses = () => {
   }
 
   return (
-    // Render header, filters, and pie chart
     <div>
       {/* HEADER */}
       <div className="mb-5">

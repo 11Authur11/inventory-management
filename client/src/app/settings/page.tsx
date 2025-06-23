@@ -1,19 +1,14 @@
 "use client";
 
-// Settings page for user preferences and toggles
 import React, { useState } from "react";
 import Header from "@/app/(components)/Header";
 
 type UserSetting = {
-  // Label for the setting
   label: string;
-  // Value of the setting (string or boolean)
   value: string | boolean;
-  // Type of input (text or toggle)
   type: "text" | "toggle";
 };
 
-// Mock settings data for demonstration
 const mockSettings: UserSetting[] = [
   { label: "Username", value: "john_doe", type: "text" },
   { label: "Email", value: "john.doe@example.com", type: "text" },
@@ -23,10 +18,8 @@ const mockSettings: UserSetting[] = [
 ];
 
 const Settings = () => {
-  // State for user settings
   const [userSettings, setUserSettings] = useState<UserSetting[]>(mockSettings);
 
-  // Handle toggle changes for boolean settings
   const handleToggleChange = (index: number) => {
     const settingsCopy = [...userSettings];
     settingsCopy[index].value = !settingsCopy[index].value as boolean;
